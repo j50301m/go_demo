@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "/user";
+
+service UserService {
+    rpc SignUpByOauth (SignUpByOauthRequest) returns (SignUpByOauthResponse);
+}
+
+message SignUpByOauthRequest {
+    string provider =1;
+    string access_token =2; // jwt token of oauth provider from frontend
+}
+
+message SignUpByOauthResponse {
+    string access_token = 1; // token of hype casino from backend
+}

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "/auth";
+
+import "pkg/pb/protos/auth/common.proto";
+
+service AuthService {
+    rpc ClientAuth (ClientAuthRequest) returns (AuthResponse); // 客戶端token
+    rpc Login (LoginRequest) returns (AuthResponse); // 一般登入
+    rpc ValidToken (ValidTokenRequest) returns (ValidTokenResponse); // 驗證token
+}
+
+message ClientAuthRequest {
+    int64 client_id =1;
+}
+
+message AuthResponse {
+    string access_token = 1;
+    int64 tokenExpireSecs = 2; // token最大存活時間
+}
+
+message LoginRequest{
+    int64 userId = 1;
+    string password = 2;
+    string access_token = 3;
+    string user_agent = 4; // 遊覽器中
+    string ip = 5; // 登入IP
+}
+
+message ValidTokenRequest {
+    string access_token = 1;
+}
+
+message ValidTokenResponse {
+    optional Role role = 1;
+    optional string user_account = 2; // 玩家帳號(唯一)
+    optional int64 user_id = 3; // 玩家Id(唯一)
+    int64 client_id = 4; // 客戶端Id
+    int64 merchant_id = 5; // 商戶Id
+}
